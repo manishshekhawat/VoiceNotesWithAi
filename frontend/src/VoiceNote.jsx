@@ -27,7 +27,9 @@ const VoiceNote = () => {
   const fetchNotes = async () => {
     try {
       setLoading(true);
-      const res = await fetch("https://voicenoteswithai.onrender.com/api/notes");
+      const res = await fetch(
+        "https://voicenoteswithai.onrender.com/api/notes"
+      );
       const data = await res.json();
       setNotes(data);
     } catch (err) {
@@ -43,24 +45,35 @@ const VoiceNote = () => {
 
   // ✅ Stop listening & save transcript
   const stopListening = async () => {
-    SpeechRecognition.stopListening();
-    setTimeout(async () => {
-      if (transcript.trim()) {
-        const note = { text: transcript.trim(), summary: null };
-        const saved = await sendData(note);
-        setNotes((prev) => [saved, ...prev]);
-      }
-      resetTranscript();
-    }, 500);
-  };
+  // Force stop listening
+  SpeechRecognition.stopListening();
+  if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+    const recognition =
+      new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.abort(); // ✅ hard stop
+  }
+
+  setTimeout(async () => {
+    if (transcript.trim()) {
+      const note = { text: transcript.trim(), summary: null };
+      const saved = await sendData(note);
+      setNotes((prev) => [saved, ...prev]);
+    }
+    resetTranscript();
+  }, 500);
+};
+
 
   // ✅ Save note to DB
   async function sendData(note) {
-    const resp = await fetch("https://voicenoteswithai.onrender.com/api/notes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(note),
-    });
+    const resp = await fetch(
+      "https://voicenoteswithai.onrender.com/api/notes",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(note),
+      }
+    );
     return await resp.json();
   }
 
@@ -127,7 +140,9 @@ const VoiceNote = () => {
         </h1>
 
         {/* Listening state */}
-        <p className="text-gray-600">🎤 Listening: {listening ? "Yes" : "No"}</p>
+        <p className="text-gray-600">
+          🎤 Listening: {listening ? "Yes" : "No"}
+        </p>
 
         {/* Start/Stop buttons */}
         {listening ? (
@@ -148,8 +163,12 @@ const VoiceNote = () => {
 
         {/* ✅ Always visible Live Transcript */}
         <div className="p-3 border rounded bg-gray-50 min-h-[80px]">
-          <h2 className="text-lg font-semibold text-gray-800">Live Transcript</h2>
-          <p className="text-gray-700">{transcript || "🎙️ Start speaking..."}</p>
+          <h2 className="text-lg font-semibold text-gray-800">
+            Live Transcript
+          </h2>
+          <p className="text-gray-700">
+            {transcript || "🎙️ Start speaking..."}
+          </p>
         </div>
 
         {/* ✅ Notes History */}
