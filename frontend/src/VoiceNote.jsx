@@ -34,11 +34,11 @@ const VoiceNote = () => {
   const stopListening = async () => {
     SpeechRecognition.stopListening();
     if (transcript.trim()) {
-      const note = { text: transcript, summary: null };
+      const note = { text: transcript.trim(), summary: null };
       const saved = await sendData(note);
       setNotes((prev) => [saved, ...prev]);
+      resetTranscript();
     }
-    resetTranscript();
   };
 
   const handleGenerateSummary = async (noteId) => {
@@ -48,7 +48,11 @@ const VoiceNote = () => {
         `https://voicenoteswithai.onrender.com/api/notes/${noteId}/summary`,
         { method: "POST" }
       );
-      if (!resp.ok) throw new Error("Error generating summary");
+      if (!resp.ok) {
+        const errMsg = await resp.text();
+        throw new Error(errMsg || "Error generating summary");
+      }
+
       const updatedNote = await resp.json();
       setNotes((prev) =>
         prev.map((n) => (n._id === updatedNote._id ? updatedNote : n))
