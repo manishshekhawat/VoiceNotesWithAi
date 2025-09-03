@@ -12,7 +12,7 @@ const VoiceNote = () => {
   }, []);
 
   const fetchNotes = async () => {
-    const res = await fetch("http://localhost:3000/api/notes");
+    const res = await fetch("https://voicenoteswithai.onrender.com/api/notes");
     const data = await res.json();
     setNotes(data);
   };
@@ -33,7 +33,7 @@ const VoiceNote = () => {
   const handleGenerateSummary = async (noteId) => {
     try {
       const resp = await fetch(
-        `http://localhost:3000/api/notes/${noteId}/summary`,
+        `https://voicenoteswithai.onrender.com/api/notes/${noteId}/summary`,
         {
           method: "POST",
         }
@@ -53,7 +53,7 @@ const VoiceNote = () => {
 
   const handleDelete = async (noteId) => {
     try {
-      const resp = await fetch(`http://localhost:3000/api/notes/${noteId}`, {
+      const resp = await fetch(`https://voicenoteswithai.onrender.com/api/notes/${noteId}`, {
         method: "DELETE",
       });
       if (!resp.ok) throw new Error("Delete failed");
@@ -68,7 +68,7 @@ const VoiceNote = () => {
     if (!newText || newText.trim() === note.text) return;
 
     try {
-      const resp = await fetch(`http://localhost:3000/api/notes/${note._id}`, {
+      const resp = await fetch(`https://voicenoteswithai.onrender.com/api/notes/${note._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: newText }),
@@ -86,7 +86,7 @@ const VoiceNote = () => {
   };
 
   async function sendData(note) {
-    const resp = await fetch("http://localhost:3000/api/notes", {
+    const resp = await fetch("https://voicenoteswithai.onrender.com/api/notes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(note),
