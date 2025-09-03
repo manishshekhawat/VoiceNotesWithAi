@@ -1,4 +1,4 @@
-import VoiceNote from "./VoiceNote"
+import VoiceNote from "./components/VoiceNote"
 
 
 
