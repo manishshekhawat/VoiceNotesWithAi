@@ -5,7 +5,8 @@ import SpeechRecognition, {
 
 const VoiceNote = () => {
   const [notes, setNotes] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
+  const [summaryLoading, setSummaryLoading] = useState(null);
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
 
   useEffect(() => {
@@ -15,13 +16,15 @@ const VoiceNote = () => {
   const fetchNotes = async () => {
     try {
       setLoading(true);
-      const res = await fetch("https://voicenoteswithai.onrender.com/api/notes");
+      const res = await fetch(
+        "https://voicenoteswithai.onrender.com/api/notes"
+      );
       const data = await res.json();
       setNotes(data);
     } catch (err) {
       console.error("Fetch notes error:", err);
     } finally {
-      setLoading(false); 
+      setLoading(false); // ✅ always stop loading
     }
   };
 
@@ -39,6 +42,7 @@ const VoiceNote = () => {
   };
 
   const handleGenerateSummary = async (noteId) => {
+    setSummaryLoading(noteId);
     try {
       const resp = await fetch(
         `https://voicenoteswithai.onrender.com/api/notes/${noteId}/summary`,
@@ -51,6 +55,8 @@ const VoiceNote = () => {
       );
     } catch (err) {
       console.error("Summary error:", err);
+    } finally {
+      setSummaryLoading(null);
     }
   };
 
@@ -91,11 +97,14 @@ const VoiceNote = () => {
   };
 
   async function sendData(note) {
-    const resp = await fetch("https://voicenoteswithai.onrender.com/api/notes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(note),
-    });
+    const resp = await fetch(
+      "https://voicenoteswithai.onrender.com/api/notes",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(note),
+      }
+    );
     return await resp.json();
   }
 
@@ -139,7 +148,9 @@ const VoiceNote = () => {
           {loading ? (
             <p className="text-center text-gray-500">⏳ Loading notes...</p>
           ) : notes.length === 0 ? (
-            <p className="text-center text-gray-400">No notes yet. Start recording!</p>
+            <p className="text-center text-gray-400">
+              No notes yet. Start recording!
+            </p>
           ) : (
             notes.map((note) => (
               <div
@@ -165,10 +176,14 @@ const VoiceNote = () => {
 
                   <button
                     className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition disabled:bg-gray-400 cursor-pointer"
-                    disabled={!!note.summary}
+                    disabled={!!note.summary || summaryLoading === note._id}
                     onClick={() => handleGenerateSummary(note._id)}
                   >
-                    {note.summary ? "Summary Generated" : "Generate Summary"}
+                    {summaryLoading === note._id
+                      ? "Processing..."
+                      : note.summary
+                      ? "Summary Generated"
+                      : "Generate Summary"}
                   </button>
                 </div>
 
