@@ -5,7 +5,7 @@ import SpeechRecognition, {
 
 const VoiceNote = () => {
   const [notes, setNotes] = useState([]);
-  const [loading, setLoading] = useState(true); // ✅ loading state
+  const [loading, setLoading] = useState(true); 
   const { transcript, listening, resetTranscript } = useSpeechRecognition();
 
   useEffect(() => {
@@ -21,8 +21,7 @@ const VoiceNote = () => {
     } catch (err) {
       console.error("Fetch notes error:", err);
     } finally {
-      setLoading(false); // ✅ always stop loading
-    }
+      setLoading(false); 
   };
 
   const startListening = () =>
