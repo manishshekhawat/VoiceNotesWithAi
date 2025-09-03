@@ -161,14 +161,14 @@ const VoiceNote = () => {
         {listening ? (
           <button
             onClick={stopListening}
-            className="w-full py-3 bg-red-500 text-lg md:text-xl font-semibold text-white rounded-xl"
+            className="w-full py-3 bg-red-500 text-lg md:text-xl font-semibold text-white rounded-xl cursor-pointer"
           >
             Stop Recording
           </button>
         ) : (
           <button
             onClick={startListening}
-            className="w-full py-3 bg-green-500 text-lg md:text-xl font-semibold text-white rounded-xl"
+            className="w-full py-3 bg-green-500 text-lg md:text-xl font-semibold text-white rounded-xl cursor-pointer"
           >
             Start Recording
           </button>
@@ -196,20 +196,20 @@ const VoiceNote = () => {
                 <div className="flex flex-wrap gap-2 justify-between">
                   <button
                     onClick={() => handleEdit(note)}
-                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition"
+                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition cursor-pointer"
                   >
                     Edit
                   </button>
 
                   <button
                     onClick={() => handleDelete(note._id)}
-                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition cursor-pointer"
                   >
                     Delete
                   </button>
 
                   <button
-                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition disabled:bg-gray-400"
+                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition disabled:bg-gray-400 cursor-pointer"
                     disabled={!!note.summary || summaryLoading === note._id}
                     onClick={() => handleGenerateSummary(note._id)}
                   >
