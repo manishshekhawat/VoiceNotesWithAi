@@ -22,6 +22,7 @@ const VoiceNote = () => {
       console.error("Fetch notes error:", err);
     } finally {
       setLoading(false); 
+    }
   };
 
   const startListening = () =>
