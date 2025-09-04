@@ -1,5 +1,5 @@
-// A full-stack application that allows users to record voice notes, transcribe them into text in real-time, and generate AI-powered summaries. 
-// Built with React (Vercel) for the frontend and Node.js + Express + MongoDB (Render) for the backend.
+ A full-stack application that allows users to record voice notes, transcribe them into text in real-time, and generate AI-powered summaries. 
+ Built with React (Vercel) for the frontend and Node.js + Express + MongoDB (Render) for the backend.
 
 <----------Features---------->
 
@@ -9,7 +9,7 @@
 📝 Edit & Delete Notes anytime.
 🤖 AI-Powered Summaries (Gemini API integration).
 📜 History Section to view all past notes.
-🌐 Fully deployed → Frontend (Vercel), Backend (Render).*/
+🌐 Fully deployed → Frontend (Vercel), Backend (Render).
 
 
 <----------Tech Stack------------>
